@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Physical Training</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .logo {
+            margin-top: 20px;
+        }
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+        h1, h2, h3 {
+            color: #333;
+            margin: 20px 0;
+        }
+        .details {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            width: 100%;
+            max-width: 200px;
+            display: block;
+            margin: 20px auto 0;
+        }
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .plans {
+            margin: 20px 0;
+        }
+        .plan {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+        .note {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            margin: 15px 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        @media only screen and (max-width: 414px) {
+            .container {
+                padding: 15px;
+            }
+            .btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+    <script>
+        function calculateWeights() {
+            const squat1RM = parseFloat(document.getElementById('squat1RM').value);
+            const bench1RM = parseFloat(document.getElementById('bench1RM').value);
+
+            if (!isNaN(squat1RM) && !isNaN(bench1RM)) {
+                const powerPercentage = 0.80; // 80% for power exercises
+
+                // Calculate weights for the Power Training Plan
+                document.getElementById('squatCleanWeight').innerText = (squat1RM * powerPercentage).toFixed(2);
+                document.getElementById('pushPressWeight').innerText = (bench1RM * powerPercentage).toFixed(2);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </div>
+        <h1>Physical Training for {{ position_name }}</h1>
+
+        <div class="input-group">
+            <label for="squat1RM">Enter your 1RM for Squat (kg):</label>
+            <input type="number" id="squat1RM" name="squat1RM" step="0.01" min="0" oninput="calculateWeights()">
+        </div>
+        
+        <div class="input-group">
+            <label for="bench1RM">Enter your 1RM for Bench Press (kg):</label>
+            <input type="number" id="bench1RM" name="bench1RM" step="0.01" min="0" oninput="calculateWeights()">
+        </div>
+
+        <div class="plans">
+            <div class="plan">
+                <h3>Power Training Plan</h3>
+                <div class="note">
+                    <p>For power training, aim to complete 15-20 sets per session, with 4-6 reps per set.</p>
+                </div>
+                <ul>
+                    <li>Squat Cleans: <span id="squatCleanWeight">0.00</span> kg
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/yTNZ9PQKWEw" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </li>
+                    <li>Power Cleans
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/GvfFf4xDNqM" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <li>Jerk
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/Q8NK4eOe_74" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Push Press: <span id="pushPressWeight">0.00</span> kg
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/XKeF_XMC9GM" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>High Pull
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/wZN6qYDUVuY" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="plan">
+                    <h3>Plyometrics Training Plan</h3>
+                    <div class="note">
+                        <p>For Plyometric training, aim to complete 8-10 sets per session, with 4-6 reps per set.</p>
+                    </div>
+                    <ul>
+                        <li>Vertical Jumps
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/j260zYfRz8Q" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Box Jumps
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/wFMgUUn-_xY" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Depth Jumps
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/AzPJZHOmGEg" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Hurdle Jumps
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/KW_lDNo-5oE" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Stair Running
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/1zZr4WgYAJE" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Bounding
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/3kSA9pm56NI" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Jumps and Hops for Distance
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/m6fIMf48OR0" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Clap Push-ups
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/k53ogCacHIQ" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Medicine Ball Throws
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/JfEXmKp2Reg" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="plan">
+                    <h3>Speed Training Plan</h3>
+                    <div class="note">
+                        <p>For Speed training, aim to complete 10-30s increments per exercise for 3 sets.</p>
+                    </div>
+                    <ul>
+                        <li>A Skips
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/-O9H15yVc8s" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>B Skips
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/Zy97yNE7WEE" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Banded Accelerations
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/zjjR3UJAYsY" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Flying Sprints
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/TZPHg7F3G7I" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>Shuttle Runs
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/9pb6JX2ulDU" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+            <a href="/" class="btn">Go Back</a>
+        </div>
+    </body>
+    </html>
+    
+                   
