@@ -7,7 +7,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-interpreter = tf.lite.Interpreter(model_path='best_neural_network_model.tflite')
+interpreter = tf.lite.Interpreter(model_path='converted_model.tflite')
 interpreter.allocate_tensors()
 
 # Get input and output tensors
@@ -45,10 +45,16 @@ def recommend():
     # Prepare the input data for the neural network
     input_data = pd.DataFrame([[height, weight, sprint]], columns=['Height (cm)', 'Weight (kg)', '10m Sprint Time (s)'])
     input_data_scaled = scaler.transform(input_data)
-    
+
+    # Set the input tensor
+    interpreter.set_tensor(input_details[0]['index'], np.array(input_data_scaled, dtype=np.float32))
+
+    # Run the inference
+    interpreter.invoke()
+
     # Get predictions from the model
     predictions = interpreter.get_tensor(output_details[0]['index'])[0]
-    
+
     # Get the top 3 recommended positions
     top_indices = predictions.argsort()[-3:][::-1]
     recommended_positions = [{'name': positions[i], 'probability': predictions[i]} for i in top_indices]
@@ -74,13 +80,13 @@ def position_details():
 @app.route('/physical_training/<position>', methods=['GET'])
 def physical_training(position):
     conn = get_db_connection()
-    
+
     # Query to get position ID and details
     position_row = conn.execute('SELECT * FROM positions WHERE Position = ?', (position,)).fetchone()
-    
+
     if not position_row:
         return "Position not found."
-    
+
     # Fetch training details using the position ID
     position_id = position_row['id']
     training_details = conn.execute('SELECT * FROM physical_training WHERE position_id = ?', (position_id,)).fetchone()
@@ -111,7 +117,7 @@ def technical_drills(position):
             drill_name = drill[f'drill{i}']
             video_link = drill[f'video{i}']
             url_link = drill[f'url{i}']
-            
+
             # Transform video link to embed format
             if video_link and video_link.lower() != 'none':
                 # Extract video ID
@@ -132,7 +138,6 @@ def technical_drills(position):
                 })
 
     return render_template('technical_drills.html', drill_info=drill_info, position_name=position)
-
 
 
 if __name__ == '__main__':
